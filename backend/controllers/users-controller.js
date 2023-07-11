@@ -1,60 +1,128 @@
-const DUMMY_USER = [
-  {
-    id: "001",
-    name: "John Smith",
-    email: "john.smith@example.com",
-    phone: "+1 555-123-4567",
-  },
-  {
-    id: "002",
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
-    phone: "+1 555-987-6543",
-  },
-  {
-    id: "003",
-    name: "David Johnson",
-    email: "david.johnson@example.com",
-    phone: "+1 555-789-0123",
-  },
-  {
-    id: "004",
-    name: "Emily Brown",
-    email: "emily.brown@example.com",
-    phone: "+1 555-456-7890",
-  },
-  {
-    id: "005",
-    name: "Michael Davis",
-    email: "michael.davis@example.com",
-    phone: "+1 555-321-0987",
-  },
-];
+const { validationResult } = require("express-validator");
+
+const User = require("../models/user-model");
+const httpError = require("../models/http-error");
 
 // for getting all users
-const getAllUsers = (req, res, next) => {
-  res.send(DUMMY_USER);
+const getAllUsers = async (req, res, next) => {
+  let allUsers;
+  try {
+    allUsers = await User.find({}).exec();
+  } catch (error) {
+    return next(httpError("Some error occured while finding the Users", 500));
+  }
+
+  if (allUsers.length === 0) {
+    return next(httpError("Could not find any Users", 404));
+  }
+
+  // if user could be found and user array not zero we will now return the users
+
+  res.status(200).json({
+    message: "List of all Users",
+    users: allUsers.map((user) => user.toObject({ getters: true })),
+  });
 };
 
 // for creating new users
-const createNewUser = (req, res, next) => {};
+const createNewUser = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    return next(httpError("Not valid Input", 500));
+  }
+
+  const { name, email, phone } = req.body;
+
+  const createdUser = new User({
+    name,
+    email,
+    phone,
+  });
+
+  try {
+    await createdUser.save();
+  } catch (error) {
+    return next(httpError(error.message, 500));
+  }
+
+  res.status(201).json({
+    message: "User Created",
+    createdUser: createdUser.toObject({ getters: true }),
+  });
+};
 
 // for getting userId
-const getUserById = (req, res, next) => {
+const getUserById = async (req, res, next) => {
   const userId = req.params.uid;
-  res.send(userId);
+
+  let existingUser;
+
+  try {
+    existingUser = await User.findById(userId).exec();
+  } catch (error) {
+    return next(httpError("Error occured while finding the User", 500));
+  }
+  if (!existingUser) {
+    return next(httpError("Could not find the User by UserId", 404));
+  }
+
+  // If user exist and the user could be found
+
+  res.status(200).json({
+    message: "User Found",
+    existingUser: existingUser.toObject({ getters: true }),
+  });
 };
 
 // for updating User
-const updateUserById = (req, res, next) => {
+const updateUserById = async (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    return next(httpError("Not valid Input", 500));
+  }
+  const { name } = req.body;
+
   const userId = req.params.uid;
   console.log(userId);
+
+  let existingUser;
+
+  try {
+    existingUser = await User.findById(userId).exec();
+  } catch (error) {
+    return next(httpError("Error occured while finding the User", 500));
+  }
+  if (!existingUser) {
+    return next(httpError("Could not find the User by UserId", 404));
+  }
+
+  existingUser.name = name;
+
+  try {
+    await existingUser.save();
+  } catch (error) {
+    return next(httpError("Error while saving updated User", 500));
+  }
+
+  res.status(201).json({
+    message: "User Updated",
+    existingUser: existingUser.toObject({ getters: true }),
+  });
 };
 
 // for deleting user by userId
-const deleteUserById = (req, res, next) => {
+const deleteUserById = async (req, res, next) => {
   const userId = req.params.uid;
-  console.log(userId);
+
+  try {
+    await User.findOneAndRemove({ _id: userId });
+  } catch (error) {
+    return next(httpError("Unable to delete User", 500));
+  }
+
+  res.status(200).json({ message: "User Deleted" });
 };
 
 // exporting all the router
