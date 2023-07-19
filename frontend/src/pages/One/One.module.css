@@ -1,2 +1,44 @@
 .container {
+  padding: 20px 80px;
+}
+h1 {
+  text-align: center;
+}
+
+.addBtn {
+  display: block;
+  margin: 10px auto;
+}
+
+.table {
+  width: 100%;
+  text-align: start;
+  border-collapse: collapse;
+}
+
+.table th {
+  background-color: gainsboro;
+}
+
+.table th,
+.table td {
+  padding: 10px;
+  text-align: start;
+}
+
+.table,
+.table th,
+.table td {
+  border: 1px solid black;
+}
+
+.btnWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.delBtn {
+  background-color: rgb(255, 20, 20);
+  color: white;
 }

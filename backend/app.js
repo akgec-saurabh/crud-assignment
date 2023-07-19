@@ -7,6 +7,14 @@ const httpError = require("./models/http-error");
 
 const app = express();
 
+// Set up CORS headers middleware
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // Replace with the actual origin of your frontend application
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  next();
+});
+
 app.use(bodyParser.json());
 
 app.use("/api", userRoutes);

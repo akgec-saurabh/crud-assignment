@@ -7,4 +7,12 @@
 body {
   min-height: 100vh;
   width: 100vw;
+  font-family: "Poppins", sans-serif;
+}
+
+.globalBtn {
+  padding: 7px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
