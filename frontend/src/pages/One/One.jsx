@@ -1,17 +1,41 @@
 import React, { useEffect } from "react";
 import classes from "./One.module.css";
 import { useDispatch, useSelector } from "react-redux";
-import { usersFetchAction } from "../../store";
+import {
+  userDeleteAction,
+  userFetchById,
+  usersFetchAction,
+} from "../../store/user-actions";
+import { userActions } from "../../store";
 
 const One = () => {
-  const onClickHandler = () => {};
+  const onClickHandler = () => {
+    dispatch(userActions.setAddMode(true));
+  };
 
   const users = useSelector((state) => state.users.users);
+
   const dispatch = useDispatch();
+
+  console.log(users);
 
   useEffect(() => {
     dispatch(usersFetchAction());
   }, [dispatch]);
+
+  const onViewHandler = (userId) => {
+    dispatch(userActions.setViewMode(true));
+    dispatch(userFetchById(userId));
+  };
+
+  const onEditHandler = (userId) => {
+    dispatch(userActions.setEditMode(true));
+    dispatch(userFetchById(userId));
+  };
+
+  const onDeleteHandler = (userId) => {
+    dispatch(userDeleteAction(userId));
+  };
 
   return (
     <div className={classes.container}>
@@ -40,13 +64,22 @@ const One = () => {
               <tr>
                 <td colSpan={2}>
                   <div className={classes.btnWrapper}>
-                    <button className={`${classes.viewBtn} globalBtn`}>
+                    <button
+                      onClick={() => onViewHandler(user.id)}
+                      className={`${classes.viewBtn} globalBtn`}
+                    >
                       View
                     </button>
-                    <button className={`${classes.editBtn} globalBtn`}>
+                    <button
+                      onClick={() => onEditHandler(user.id)}
+                      className={`${classes.editBtn} globalBtn`}
+                    >
                       Edit
                     </button>
-                    <button className={`${classes.delBtn} globalBtn`}>
+                    <button
+                      onClick={() => onDeleteHandler(user.id)}
+                      className={`${classes.delBtn} globalBtn`}
+                    >
                       Delete
                     </button>
                   </div>

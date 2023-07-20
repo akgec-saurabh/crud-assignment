@@ -1,7 +1,12 @@
 import { createSlice, configureStore } from "@reduxjs/toolkit";
+import formSlice from "./form-slice";
 
 const initialUsersState = {
   users: [],
+  selectedUser: null,
+  isEditMode: false,
+  isViewMode: false,
+  isAddMode: false,
 };
 
 const userSlice = createSlice({
@@ -9,35 +14,44 @@ const userSlice = createSlice({
   initialState: initialUsersState,
   reducers: {
     replaceUsers(state, action) {
-      console.log(state.users);
+      // console.log(state.users);
       state.users = action.payload;
+    },
+
+    setSelectedUser(state, action) {
+      state.selectedUser = action.payload;
+    },
+
+    clearSelectedUser(state) {
+      state.selectedUser = null;
+    },
+
+    setEditMode(state, action) {
+      state.isEditMode = action.payload;
+    },
+
+    setViewMode(state, action) {
+      state.isViewMode = action.payload;
+    },
+
+    setAddMode(state, action) {
+      state.isAddMode = action.payload;
+    },
+
+    setUpdatedUser(state, action) {
+      state.updatedUser = action.payload;
+    },
+
+    deleteUser(state, action) {
+      state.users = state.users.filter((user) => user.id !== action.payload);
+      console.log(state.users);
     },
   },
 });
 
-export const usersFetchAction = () => {
-  return async (dispatch) => {
-    const fetchUsers = async () => {
-      const response = await fetch("http://localhost:5000/api/users/");
-      if (!response.ok) {
-        throw new Error("Could Not Fetch User List");
-      }
-
-      const responseData = await response.json();
-      console.log(responseData.users);
-
-      dispatch(userActions.replaceUsers(responseData.users));
-    };
-
-    try {
-      fetchUsers();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
-
-export const store = configureStore({ reducer: { users: userSlice.reducer } });
+export const store = configureStore({
+  reducer: { users: userSlice.reducer, form: formSlice.reducer },
+});
 
 export const userActions = userSlice.actions;
 

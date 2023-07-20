@@ -78,6 +78,7 @@ const getUserById = async (req, res, next) => {
 // for updating User
 const updateUserById = async (req, res, next) => {
   const errors = validationResult(req);
+  console.log(req.body);
   if (!errors.isEmpty()) {
     console.log(errors);
     return next(httpError("Not valid Input", 500));

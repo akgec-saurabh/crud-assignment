@@ -1,9 +1,12 @@
 import React from "react";
 import classes from "./Three.module.css";
-const Three = ({ user }) => {
+import { useSelector } from "react-redux";
+const Three = () => {
+  const selectedUser = useSelector((state) => state.users.selectedUser);
+
   return (
     <div className={classes.container}>
-      <h1>Page Three</h1>
+      <h1>Page Three(View)</h1>
       <table className={classes.table}>
         <thead>
           <tr>
@@ -15,10 +18,10 @@ const Three = ({ user }) => {
         </thead>
         <tbody>
           <tr>
-            <td>1</td>
-            <td>John Doe</td>
-            <td>john.doe@example.com</td>
-            <td>(123) 456-7890</td>
+            <td>{selectedUser.id}</td>
+            <td>{selectedUser.name}</td>
+            <td>{selectedUser.email}</td>
+            <td>{selectedUser.phone}</td>
           </tr>
         </tbody>
       </table>

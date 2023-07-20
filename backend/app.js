@@ -9,10 +9,19 @@ const app = express();
 
 // Set up CORS headers middleware
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000"); // Replace with the actual origin of your frontend application
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+
+  // For pre-flight req
+  if (req.method === "OPTIONS") {
+    res.status(200).send(); // Move to the next middleware for non-OPTIONS requests
+  } else {
+    next();
+  }
 });
 
 app.use(bodyParser.json());

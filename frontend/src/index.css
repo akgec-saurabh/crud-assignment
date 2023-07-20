@@ -16,3 +16,8 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
+
+.hCenter {
+  display: block;
+  margin: 10px auto;
+}
