@@ -101,7 +101,7 @@ const Two = () => {
           />
         </div>
         <div className={classes.input}>
-          <label htmlFor="phone">Phone Number</label>
+          <label htmlFor="phone">Phone</label>
           <input
             ref={phoneRef}
             className={phoneValid ? `${classes.green}` : ""}
@@ -114,7 +114,9 @@ const Two = () => {
         </div>
 
         <button
-          disabled={!nameValid || !phoneValid || !emailValid}
+          disabled={
+            isEditMode ? false : !nameValid || !phoneValid || !emailValid
+          }
           className="globalBtn hCenter"
         >
           {isAddMode ? "Create" : "Update"}

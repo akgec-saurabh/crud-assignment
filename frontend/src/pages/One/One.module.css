@@ -42,3 +42,14 @@ h1 {
   background-color: rgb(255, 20, 20);
   color: white;
 }
+
+@media (max-width: 350px) {
+  .container {
+    padding: 10px 5px;
+  }
+}
+@media (max-width: 480px) {
+  .container {
+    padding: 10px 10px;
+  }
+}

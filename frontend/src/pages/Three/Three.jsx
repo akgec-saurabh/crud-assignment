@@ -13,7 +13,7 @@ const Three = () => {
             <th>Id</th>
             <th>Name</th>
             <th>Email</th>
-            <th>Phone Number</th>
+            <th>Phone</th>
           </tr>
         </thead>
         <tbody>

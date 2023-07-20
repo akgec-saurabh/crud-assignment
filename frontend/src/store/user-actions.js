@@ -3,7 +3,7 @@ import { userActions } from "./index";
 export const usersFetchAction = () => {
   return async (dispatch) => {
     const fetchUsers = async () => {
-      const response = await fetch("http://localhost:5000/api/users/");
+      const response = await fetch(`${process.env.REACT_APP_URL}api/users/`);
       if (!response.ok) {
         throw new Error("Could Not Fetch User List");
       }
@@ -25,7 +25,9 @@ export const usersFetchAction = () => {
 export const userFetchById = (userId) => {
   return async (dispatch) => {
     const sendReq = async () => {
-      const response = await fetch(`http://localhost:5000/api/users/${userId}`);
+      const response = await fetch(
+        `${process.env.REACT_APP_URL}api/users/${userId}`
+      );
       if (!response.ok) {
         throw new Error("Could Not Create User");
       }
@@ -48,7 +50,7 @@ export const userFetchById = (userId) => {
 export const userPostAction = (user) => {
   return async (dispatch) => {
     const sendReq = async () => {
-      const response = await fetch("http://localhost:5000/api/users/", {
+      const response = await fetch(`${process.env.REACT_APP_URL}api/users/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +79,7 @@ export const userPatchAction = (user) => {
   return async (dispatch) => {
     const sendReq = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/users/${user.id}`,
+        `${process.env.REACT_APP_URL}api/users/${user.id}`,
         {
           method: "PATCH",
           headers: {
@@ -108,13 +110,13 @@ export const userDeleteAction = (userId) => {
   return async (dispatch) => {
     const sendReq = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/users/${userId}`,
+        `${process.env.REACT_APP_URL}api/users/${userId}`,
         {
           method: "DELETE",
         }
       );
       if (!response.ok) {
-        throw new Error("Could Not Create User");
+        throw new Error("Could Not Delete User");
       }
 
       const responseData = await response.json();

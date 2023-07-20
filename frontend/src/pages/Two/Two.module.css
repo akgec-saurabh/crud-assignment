@@ -13,11 +13,42 @@ h1 {
   margin-top: 80px;
 }
 
+.input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.input label {
+  margin-right: 5px;
+}
+
 .form input {
   width: 350px;
+  font-size: 16px;
+  margin: 2px auto 10px;
 }
 
 .green {
   border: 1px solid greenyellow;
   outline: 1px solid green;
+}
+
+@media (max-width: 350px) {
+  .container {
+    padding: 10px 5px;
+  }
+}
+@media (max-width: 480px) {
+  .container {
+    padding: 10px 10px;
+  }
+
+  .input {
+    width: 100%;
+  }
+
+  .form input {
+    width: 100%;
+  }
 }
